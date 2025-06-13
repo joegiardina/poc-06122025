@@ -1,50 +1,26 @@
-# Welcome to your Expo app 👋
+# WebKit Bug Minimal Example App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
-
-## Get started
-
-1. Install dependencies
-
-   ```bash
-   npm install
-   ```
-
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
+## Setup
+```
+npm i
+npm start
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Reproducing the issue
+1. Run the app via `npm start`
+1. Switch to Safari app
+1. Open a page (e.g. macys.com)
+1. Enable the extension, open it, and allow full permissions
+1. Open extension background page via Mac's Safari > Develop menu
+1. Browse safari and observe bg page console logs. You should see `content script responded`
+1. Run `goToUrlA()` or `goToUrlB()` in the bg console. This will update the URL of the tab and will likely trigger the issue.
+1. Browse around, switching between manual browsing and the `goToUrlA/goToUrlB` methods
+1. Issue should be reproduced. Sometimes you will see `content script responded` and sometimes not, often depending on the domain.
+1. Open a new tab and start over to reproduce again.
 
-## Learn more
+## MyExtension vs. MyExtension2
+MyExtension adds onMessage listeners in the initial content script specified in the manifest.
 
-To learn more about developing your project with Expo, look at the following resources:
+MyExtension2 adds onMessage listeners via a second script, injected with browser.tabs.executeScript by the bg script after receiving the loaded message from the content script.
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+To switch between the extensions, find `react-native-safari-extension` in the `app.json` file and change the `folderName` property.

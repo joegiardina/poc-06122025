@@ -4,5 +4,4 @@ const listener = (request, sender, sendResponse) => {
 };
 browser.runtime.onMessage.removeListener(listener);
 browser.runtime.onMessage.addListener(listener);
-
-browser.runtime.sendMessage('content script loaded at ' + window.location.href);
+browser.runtime.sendMessage('content script listeners registered');
